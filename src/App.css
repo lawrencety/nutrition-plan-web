@@ -31,3 +31,35 @@
     transform: rotate(360deg);
   }
 }
+
+AppBar {
+  text-align: right;
+}
+
+.card {
+  display: inline-block;
+  max-width: 35vw;
+  margin: 0px 10px 0px 10px;
+}
+
+.nav {
+  display: inline-block;
+  left: 80vw;
+  margin-right: 0px;
+}
+
+.nav-link {
+  color: white !important;
+  width: 60px;
+  padding: 0px 10px 0px 10px;
+}
+
+.hero {
+  min-width: 100vw;
+  padding: auto;
+}
+
+.home-card {
+  max-width: 40vw !important;
+  margin: auto;
+}
