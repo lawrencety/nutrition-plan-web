@@ -11,7 +11,7 @@ class App extends Component {
         <header className="head">
           <nav>
             <Link to='/'>Home</Link>
-            <Link to='/'>Dashboard</Link>
+            <Link to='/dashboard'>Dashboard</Link>
           </nav>
           <h1 className="page-title">My Jams</h1>
         </header>
