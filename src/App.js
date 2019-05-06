@@ -4,6 +4,7 @@ import './App.css';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import NavBarPrivate from './components/NavBarPrivate';
+import SignUp from './components/SignUp';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 import pink from '@material-ui/core/colors/pink';
@@ -36,6 +37,7 @@ class App extends Component {
           <main>
             <Route exact path='/' component={ Home } />
             <Route path='/dashboard' component={ Dashboard } />
+            <Route path='/signup' component={ SignUp } />
           </main>
         </div>
       </MuiThemeProvider>

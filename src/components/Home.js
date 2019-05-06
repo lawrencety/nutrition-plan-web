@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -21,7 +21,7 @@ class Home extends Component {
             </CardContent>
             <CardActions>
               <Button variant="contained" color="secondary">Learn More</Button>
-              <Button variant="contained" color="primary">Sign Up</Button>
+              <Button variant="contained" color="primary" component= { Link } to="/signup">Sign Up</Button>
             </CardActions>
           </Card>
         </div>

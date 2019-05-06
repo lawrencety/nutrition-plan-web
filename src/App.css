@@ -32,10 +32,6 @@
   }
 }
 
-AppBar {
-  text-align: right;
-}
-
 .card {
   display: inline-block;
   max-width: 35vw;
@@ -44,13 +40,11 @@ AppBar {
 
 .nav {
   display: inline-block;
-  left: 80vw;
   margin-right: 0px;
 }
 
 .nav-link {
   color: white !important;
-  width: 60px;
   padding: 0px 10px 0px 10px;
 }
 
