@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -36,9 +37,10 @@ class SignUp extends Component {
         <div className="hero">
           <Card className="home-card">
             <CardContent>
-              <Typography variant="headline">Sign Up</Typography>
+              <Typography variant="headline">Sign In</Typography>
             </CardContent>
             <CardActions>
+              <Button variant="contained" color="primary" component= { Link } to="/signup">Sign Up Here</Button>
               <FormControl>
                 <InputLabel htmlFor="email">Email</InputLabel>
                 <Input id="email" placeholder= "Enter Email" value={this.state.email} onChange={(e) =>this.handleChange("email", e)} />
@@ -54,7 +56,7 @@ class SignUp extends Component {
                     </InputAdornment>
                   }
                 />
-                <Button variant="contained" color="primary">Sign Up</Button>
+                <Button variant="contained" color="primary">Sign In</Button>
               </FormControl>
             </CardActions>
           </Card>

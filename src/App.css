@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  padding-top: 100px;
 }
 
 .App-logo {
@@ -34,8 +35,18 @@
 
 .card {
   display: inline-block;
-  max-width: 35vw;
+  min-width: 35vw;
   margin: 0px 10px 0px 10px;
+}
+
+.dashboard-card {
+  width: 90%;
+  margin: 0px;
+}
+
+.food-search {
+  display: block;
+  width: 100%;
 }
 
 .nav {
