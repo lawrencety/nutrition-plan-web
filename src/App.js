@@ -32,13 +32,16 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: null,
+      user: {
+        email: 'bob@example.com',
+        id: 123
+      },
       navbar: null
     }
   }
 
   componentDidMount() {
-    if (this.state.userId) {
+    if (this.state.user) {
       this.setState({
         navbar: <NavBarPrivate />
       })
@@ -58,10 +61,18 @@ class App extends Component {
           </header>
           <main>
             <Route exact path='/' component={ Home } />
-            <Route path='/dashboard' component={ Dashboard } />
+            <Route path='/dashboard'
+              render={(props) => <Dashboard {...props}
+                user={this.state.user}
+              />}
+            />
             <Route path='/signin' component={ SignIn } />
             <Route path='/signup' component={ SignUp } />
-            <Route path='/addfood' component={ AddFoodRecord } />
+            <Route path='/addfood'
+              render={(props) => <AddFoodRecord {...props}
+                user={this.state.user}
+              />}
+            />
           </main>
         </div>
       </MuiThemeProvider>

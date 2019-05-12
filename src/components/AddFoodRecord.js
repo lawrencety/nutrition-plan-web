@@ -26,7 +26,8 @@ class AddFoodRecord extends Component {
     super(props);
 
     this.state= {
-      meal: '',
+      ndbno: 1234800,
+      meal: 'breakfast',
       foodname: '',
       amount: null,
       unit: '',
@@ -37,13 +38,49 @@ class AddFoodRecord extends Component {
   componentDidMount() {
     this.setState({
       foods: [
-        {ndbno: 1234567 ,name: 'Scrambled Eggs', userId: 12, meal: 'breakfast', amount: 12.3, unit: "g"}
+        {ndbno: 1234567, name: 'Scrambled Eggs', userId: 123, meal: 'breakfast', amount: 12.3, unit: "g"}
       ]
     });
   }
 
   handleChange(prop, e) {
     this.setState({ [prop]: e.target.value });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const newRecord = {
+      ndbno: this.state.ndbno,
+      name: this.state.foodname,
+      userId: this.props.user.id,
+      meal: this.state.meal,
+      amount: this.state.amount,
+      unit: this.state.unit
+    }
+    const url = '//localhost:5000/records/create';
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(newRecord),
+      mode: 'no-cors',
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((res) => {
+      console.log(res);
+      res.json()
+    })
+    .then((response) => {
+      console.log('Success:', JSON.stringify(response));
+      this.setState({
+        foods: this.state.foods.concat(newRecord),
+        ndbno: 1234801,
+        foodname: '',
+        amount: null,
+        unit: ''
+      })
+    })
+    .catch((err) => {console.log('Error:', err)});
   }
 
   render() {
@@ -70,28 +107,28 @@ class AddFoodRecord extends Component {
                 <CardContent>
                   {
                     this.state.foods
-                      .filter( food => food.meal === this.state.meal )
-                      .map( (food) =>
-                        <ExpansionPanel>
-                          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography variant="body2">{food.name}</Typography>
-                          </ExpansionPanelSummary>
-                          <ExpansionPanelDetails>
-                            <Typography>Amount: {food.amount} {food.unit}</Typography>
-                          </ExpansionPanelDetails>
-                          <Divider />
-                          <ExpansionPanelActions>
-                            <div>
-                              <IconButton aria-label="Edit">
-                                <EditIcon />
-                              </IconButton>
-                              <IconButton aria-label="Delete">
-                                <DeleteIcon />
-                              </IconButton>
-                            </div>
-                          </ExpansionPanelActions>
-                        </ExpansionPanel>
-                      )
+                    .filter((food) => food.meal === this.state.meal )
+                    .map((food) =>
+                      <ExpansionPanel>
+                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                          <Typography variant="body2">{food.name}</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                          <Typography>Amount: {food.amount} {food.unit}</Typography>
+                        </ExpansionPanelDetails>
+                        <Divider />
+                        <ExpansionPanelActions>
+                          <div>
+                            <IconButton aria-label="Edit">
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton aria-label="Delete">
+                              <DeleteIcon />
+                            </IconButton>
+                          </div>
+                        </ExpansionPanelActions>
+                      </ExpansionPanel>
+                    )
                   }
                 </CardContent>
               </Card>
@@ -103,49 +140,52 @@ class AddFoodRecord extends Component {
                   <Divider />
                 </CardContent>
                 <CardActions>
-                  <Grid container spacing={24}>
-                    <Grid item xs={1}>
+                  <form onSubmit={(e) => this.handleSubmit(e)}>
+                    <Grid container spacing={24}>
+                      <Grid item xs={1}>
+                      </Grid>
+                      <Grid item xs={10}>
+                        <TextField
+                          id="foodname"
+                          label="Search Foods"
+                          style={{ margin: 0 }}
+                          placeholder="Search Foods"
+                          fullWidth
+                          margin="normal"
+                          onChange={(e) =>this.handleChange("foodname", e)}
+                        />
+                      </Grid>
+                      <Grid item xs={1}>
+                      </Grid>
+                      <Grid item xs={1}>
+                      </Grid>
+                      <Grid item xs={5}>
+                        <TextField
+                          id="amount"
+                          label="How much did you have?"
+                          style={{ margin: 0 }}
+                          placeholder="Enter Amount"
+                          fullWidth
+                          margin="normal"
+                          onChange={(e) =>this.handleChange("amount", e)}
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <FormControl style={{ minWidth: 90 }}>
+                          <InputLabel htmlFor="unit">Unit</InputLabel>
+                          <Select value={this.state.unit} onChange={(e) => this.handleChange("unit", e)} inputProps={{name: 'unit', id: 'unit'}} autoWidth>
+                            <MenuItem value='g'>grams</MenuItem>
+                            <MenuItem value='oz'>ounces</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Button variant="contained" color="primary" type="submit">Add Food</Button>
+                      </Grid>
+                      <Grid item xs={1}>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={10}>
-                      <TextField
-                        id="foodname"
-                        label="Search Foods"
-                        style={{ margin: 0 }}
-                        placeholder="Search Foods"
-                        fullWidth
-                        margin="normal"
-                        onChange={(e) =>this.handleChange("foodname", e)}
-                      />
-                    </Grid>
-                    <Grid item xs={1}>
-                    </Grid>
-                    <Grid item xs={1}>
-                    </Grid>
-                    <Grid item xs={5}>
-                      <TextField
-                        id="amount"
-                        label="How much did you have?"
-                        style={{ margin: 0 }}
-                        placeholder="Enter Amount"
-                        fullWidth
-                        margin="normal"
-                        onChange={(e) =>this.handleChange("amount", e)}
-                      />
-                    </Grid>
-                    <Grid item xs={2}>
-                      <FormControl style={{ minWidth: 90 }}>
-                        <InputLabel htmlFor="unit">Unit</InputLabel>
-                        <Select value={this.state.unit} onChange={(e) => this.handleChange("unit", e)} inputProps={{name: 'unit', id: 'unit'}} autoWidth>
-                          <MenuItem value='g'>grams</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Button variant="contained" color="primary">Add Food</Button>
-                    </Grid>
-                    <Grid item xs={1}>
-                    </Grid>
-                  </Grid>
+                  </form>
                 </CardActions>
                 <Divider />
               </Card>
