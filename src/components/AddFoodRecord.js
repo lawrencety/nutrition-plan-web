@@ -26,7 +26,8 @@ class AddFoodRecord extends Component {
     super(props);
 
     this.state= {
-      meal: '',
+      ndbno: 1234568,
+      meal: 'breakfast',
       foodname: '',
       amount: null,
       unit: '',
@@ -37,13 +38,43 @@ class AddFoodRecord extends Component {
   componentDidMount() {
     this.setState({
       foods: [
-        {ndbno: 1234567 ,name: 'Scrambled Eggs', userId: 12, meal: 'breakfast', amount: 12.3, unit: "g"}
+        {ndbno: 1234567, name: 'Scrambled Eggs', userId: 12, meal: 'breakfast', amount: 12.3, unit: "g"}
       ]
     });
   }
 
   handleChange(prop, e) {
     this.setState({ [prop]: e.target.value });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const newRecord = {
+      ndbno: this.state.ndbno,
+      name: this.state.foodname,
+      userId: this.props.user.id,
+      meal: this.state.meal,
+      amount: this.state.amount,
+      unit: this.state.unit
+    }
+    const url = 'dummylink.com/records/create';
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(newRecord),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error));
+    this.setState({
+      foods: this.state.foods.concat(newRecord),
+      ndbno: null,
+      foodname: '',
+      amount: null,
+      unit: ''
+    })
   }
 
   render() {
@@ -103,49 +134,52 @@ class AddFoodRecord extends Component {
                   <Divider />
                 </CardContent>
                 <CardActions>
-                  <Grid container spacing={24}>
-                    <Grid item xs={1}>
+                  <form onSubmit={(e) => this.handleSubmit(e)}>
+                    <Grid container spacing={24}>
+                      <Grid item xs={1}>
+                      </Grid>
+                      <Grid item xs={10}>
+                        <TextField
+                          id="foodname"
+                          label="Search Foods"
+                          style={{ margin: 0 }}
+                          placeholder="Search Foods"
+                          fullWidth
+                          margin="normal"
+                          onChange={(e) =>this.handleChange("foodname", e)}
+                        />
+                      </Grid>
+                      <Grid item xs={1}>
+                      </Grid>
+                      <Grid item xs={1}>
+                      </Grid>
+                      <Grid item xs={5}>
+                        <TextField
+                          id="amount"
+                          label="How much did you have?"
+                          style={{ margin: 0 }}
+                          placeholder="Enter Amount"
+                          fullWidth
+                          margin="normal"
+                          onChange={(e) =>this.handleChange("amount", e)}
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <FormControl style={{ minWidth: 90 }}>
+                          <InputLabel htmlFor="unit">Unit</InputLabel>
+                          <Select value={this.state.unit} onChange={(e) => this.handleChange("unit", e)} inputProps={{name: 'unit', id: 'unit'}} autoWidth>
+                            <MenuItem value='g'>grams</MenuItem>
+                            <MenuItem value='oz'>ounces</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Button variant="contained" color="primary" type="submit">Add Food</Button>
+                      </Grid>
+                      <Grid item xs={1}>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={10}>
-                      <TextField
-                        id="foodname"
-                        label="Search Foods"
-                        style={{ margin: 0 }}
-                        placeholder="Search Foods"
-                        fullWidth
-                        margin="normal"
-                        onChange={(e) =>this.handleChange("foodname", e)}
-                      />
-                    </Grid>
-                    <Grid item xs={1}>
-                    </Grid>
-                    <Grid item xs={1}>
-                    </Grid>
-                    <Grid item xs={5}>
-                      <TextField
-                        id="amount"
-                        label="How much did you have?"
-                        style={{ margin: 0 }}
-                        placeholder="Enter Amount"
-                        fullWidth
-                        margin="normal"
-                        onChange={(e) =>this.handleChange("amount", e)}
-                      />
-                    </Grid>
-                    <Grid item xs={2}>
-                      <FormControl style={{ minWidth: 90 }}>
-                        <InputLabel htmlFor="unit">Unit</InputLabel>
-                        <Select value={this.state.unit} onChange={(e) => this.handleChange("unit", e)} inputProps={{name: 'unit', id: 'unit'}} autoWidth>
-                          <MenuItem value='g'>grams</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Button variant="contained" color="primary">Add Food</Button>
-                    </Grid>
-                    <Grid item xs={1}>
-                    </Grid>
-                  </Grid>
+                  </form>
                 </CardActions>
                 <Divider />
               </Card>
