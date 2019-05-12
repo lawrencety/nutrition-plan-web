@@ -26,7 +26,7 @@ class AddFoodRecord extends Component {
     super(props);
 
     this.state= {
-      ndbno: 1234568,
+      ndbno: 1234800,
       meal: 'breakfast',
       foodname: '',
       amount: null,
@@ -38,7 +38,7 @@ class AddFoodRecord extends Component {
   componentDidMount() {
     this.setState({
       foods: [
-        {ndbno: 1234567, name: 'Scrambled Eggs', userId: 12, meal: 'breakfast', amount: 12.3, unit: "g"}
+        {ndbno: 1234567, name: 'Scrambled Eggs', userId: 123, meal: 'breakfast', amount: 12.3, unit: "g"}
       ]
     });
   }
@@ -57,24 +57,30 @@ class AddFoodRecord extends Component {
       amount: this.state.amount,
       unit: this.state.unit
     }
-    const url = 'dummylink.com/records/create';
+    const url = '//localhost:5000/records/create';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(newRecord),
+      mode: 'no-cors',
       headers:{
         'Content-Type': 'application/json'
       }
     })
-    .then(res => res.json())
-    .then(response => console.log('Success:', JSON.stringify(response)))
-    .catch(error => console.error('Error:', error));
-    this.setState({
-      foods: this.state.foods.concat(newRecord),
-      ndbno: null,
-      foodname: '',
-      amount: null,
-      unit: ''
+    .then((res) => {
+      console.log(res);
+      res.json()
     })
+    .then((response) => {
+      console.log('Success:', JSON.stringify(response));
+      this.setState({
+        foods: this.state.foods.concat(newRecord),
+        ndbno: 1234801,
+        foodname: '',
+        amount: null,
+        unit: ''
+      })
+    })
+    .catch((err) => {console.log('Error:', err)});
   }
 
   render() {
@@ -101,28 +107,28 @@ class AddFoodRecord extends Component {
                 <CardContent>
                   {
                     this.state.foods
-                      .filter( food => food.meal === this.state.meal )
-                      .map( (food) =>
-                        <ExpansionPanel>
-                          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography variant="body2">{food.name}</Typography>
-                          </ExpansionPanelSummary>
-                          <ExpansionPanelDetails>
-                            <Typography>Amount: {food.amount} {food.unit}</Typography>
-                          </ExpansionPanelDetails>
-                          <Divider />
-                          <ExpansionPanelActions>
-                            <div>
-                              <IconButton aria-label="Edit">
-                                <EditIcon />
-                              </IconButton>
-                              <IconButton aria-label="Delete">
-                                <DeleteIcon />
-                              </IconButton>
-                            </div>
-                          </ExpansionPanelActions>
-                        </ExpansionPanel>
-                      )
+                    .filter((food) => food.meal === this.state.meal )
+                    .map((food) =>
+                      <ExpansionPanel>
+                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                          <Typography variant="body2">{food.name}</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                          <Typography>Amount: {food.amount} {food.unit}</Typography>
+                        </ExpansionPanelDetails>
+                        <Divider />
+                        <ExpansionPanelActions>
+                          <div>
+                            <IconButton aria-label="Edit">
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton aria-label="Delete">
+                              <DeleteIcon />
+                            </IconButton>
+                          </div>
+                        </ExpansionPanelActions>
+                      </ExpansionPanel>
+                    )
                   }
                 </CardContent>
               </Card>
