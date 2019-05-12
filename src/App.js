@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import './App.css';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import NavBarPrivate from './components/NavBarPrivate';
+import NavBarPublic from './components/NavBarPublic';
+import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
+import AddFoodRecord from './components/AddFoodRecord';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 import pink from '@material-ui/core/colors/pink';
@@ -25,17 +29,39 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userId: null,
+      navbar: null
+    }
+  }
+
+  componentDidMount() {
+    if (this.state.userId) {
+      this.setState({
+        navbar: <NavBarPrivate />
+      })
+    } else {
+      this.setState({
+        navbar: <NavBarPublic />
+      })
+    }
+  }
+
   render() {
     return (
       <MuiThemeProvider theme = { theme }>
         <div className="App">
           <header className="head">
-            <NavBarPrivate />
-            <h1 className="page-title">My Jams</h1>
+            {this.state.navbar}
           </header>
           <main>
             <Route exact path='/' component={ Home } />
             <Route path='/dashboard' component={ Dashboard } />
+            <Route path='/signin' component={ SignIn } />
+            <Route path='/signup' component={ SignUp } />
+            <Route path='/addfood' component={ AddFoodRecord } />
           </main>
         </div>
       </MuiThemeProvider>

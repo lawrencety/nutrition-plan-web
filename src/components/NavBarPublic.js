@@ -7,7 +7,7 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 
 const NavBarPrivate = () => (
-  <AppBar color= 'primary'>
+  <AppBar color= 'secondary'>
     <Grid container spacing={24}>
       <Grid item xs={8}>
         <Typography variant="title">Logo</Typography>
@@ -15,7 +15,7 @@ const NavBarPrivate = () => (
       <Grid item xs={4}>
         <Toolbar className="nav">
           <Link className="nav-link" component= { RouterLink } to='/'>Home</Link>
-          <Link className="nav-link" component= { RouterLink } to='/dashboard'>Dashboard</Link>
+          <Link className="nav-link" component= { RouterLink } to='/signin'>Sign In</Link>
         </Toolbar>
       </Grid>
     </Grid>
