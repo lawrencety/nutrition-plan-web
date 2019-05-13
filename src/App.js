@@ -12,6 +12,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 import pink from '@material-ui/core/colors/pink';
 import red from '@material-ui/core/colors/red';
+const usdaApiKey = 'OD6vNuSSaTnRUYMo3feYXbE8gdn1MTpf4ZqJ3OYi'
 
 const theme = createMuiTheme({
   palette: {
@@ -36,18 +37,21 @@ class App extends Component {
         email: 'bob@example.com',
         id: 123
       },
-      navbar: null
+      navbar: null,
+      apiUrl: '//nutrition-plan-api.herokuapp.com'
     }
   }
 
   componentDidMount() {
     if (this.state.user) {
       this.setState({
-        navbar: <NavBarPrivate />
+        navbar: <NavBarPrivate />,
+        apiKey: usdaApiKey
       })
     } else {
       this.setState({
-        navbar: <NavBarPublic />
+        navbar: <NavBarPublic />,
+        apiKey: usdaApiKey
       })
     }
   }
@@ -71,6 +75,8 @@ class App extends Component {
             <Route path='/addfood'
               render={(props) => <AddFoodRecord {...props}
                 user={this.state.user}
+                apiKey={this.state.apiKey}
+                apiUrl={this.state.apiUrl}
               />}
             />
           </main>
