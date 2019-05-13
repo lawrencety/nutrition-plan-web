@@ -11,15 +11,18 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import InputLabel from '@material-ui/core/InputLabel';
+import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import SearchIcon from '@material-ui/icons/Search';
 
 class AddFoodRecord extends Component {
   constructor(props) {
@@ -31,14 +34,16 @@ class AddFoodRecord extends Component {
       foodname: '',
       amount: null,
       unit: '',
-      foods: []
+      foods: [],
+      searchResults: [],
+      anchorE1: null
     }
   }
 
   componentDidMount() {
     this.setState({
       foods: [
-        {ndbno: 1234567, name: 'Scrambled Eggs', userId: 123, meal: 'breakfast', amount: 12.3, unit: "g"}
+        {id: 12, ndbno: 1234567, name: 'Scrambled Eggs', userId: 123, meal: 'breakfast', amount: 12.3, unit: "g"}
       ]
     });
   }
@@ -46,6 +51,36 @@ class AddFoodRecord extends Component {
   handleChange(prop, e) {
     this.setState({ [prop]: e.target.value });
   }
+
+  handleSearch(e) {
+    e.preventDefault();
+    const url = '//api.nal.usda.gov/ndb/search'
+    const data = {
+      api_key: this.props.apiKey,
+      q: this.state.foodname,
+      max: 25,
+      offset: 0
+    }
+    const call = url + '/?format=json&q=' + data.q + '&sort=n&max=' + data.max + '&offset=' + data.offset + '&api_key=' + data.api_key
+    fetch(call)
+    .then((res) => {
+      return res.json()
+    })
+    .then((response) => {
+      //use `response.list.item`
+      this.setState({
+        anchorE1: e.relatedTarget,
+        searchResults: response.list.item
+      });
+    })
+  }
+
+  handleClose(e) {
+    this.setState({
+      anchorE1: null,
+      foodname: e.target.value
+    });
+  };
 
   handleSubmit(e) {
     e.preventDefault();
@@ -57,7 +92,7 @@ class AddFoodRecord extends Component {
       amount: this.state.amount,
       unit: this.state.unit
     }
-    const url = '//localhost:5000/records/create';
+    const url = this.props.apiUrl;
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(newRecord),
@@ -109,7 +144,7 @@ class AddFoodRecord extends Component {
                     this.state.foods
                     .filter((food) => food.meal === this.state.meal )
                     .map((food) =>
-                      <ExpansionPanel>
+                      <ExpansionPanel key={food.id}>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                           <Typography variant="body2">{food.name}</Typography>
                         </ExpansionPanelSummary>
@@ -140,7 +175,7 @@ class AddFoodRecord extends Component {
                   <Divider />
                 </CardContent>
                 <CardActions>
-                  <form onSubmit={(e) => this.handleSubmit(e)}>
+                  <form className="form" onSubmit={(e) => this.handleSearch(e)}>
                     <Grid container spacing={24}>
                       <Grid item xs={1}>
                       </Grid>
@@ -153,10 +188,35 @@ class AddFoodRecord extends Component {
                           fullWidth
                           margin="normal"
                           onChange={(e) =>this.handleChange("foodname", e)}
+                          InputProps= {{
+                            endAdornment:
+                              <InputAdornment position="end">
+                                <IconButton aria-label="Search" type="submit">
+                                  <SearchIcon />
+                                </IconButton>
+                              </InputAdornment>
+                          }}
+                          aria-owns={this.state.anchorEl ? "search-menu" : undefined}
                         />
+                          <Menu id="search-menu" anchorEl={this.state.anchorEl} open={this.state.anchorE1 !== null}>
+                            {
+                              this.state.searchResults
+                              .map((result) =>
+                                <MenuItem key={result.ndbno} value={result.ndbno} onClick={(e) => this.handleClose(e)}>
+                                  {result.name}
+                                </MenuItem>
+                              )
+                            }
+                          </Menu>
                       </Grid>
                       <Grid item xs={1}>
                       </Grid>
+                    </Grid>
+                  </form>
+                </CardActions>
+                <CardActions>
+                  <form className="form" onSubmit={(e) => this.handleSubmit(e)}>
+                    <Grid container spacing={24}>
                       <Grid item xs={1}>
                       </Grid>
                       <Grid item xs={5}>
