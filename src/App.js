@@ -38,7 +38,7 @@ class App extends Component {
         id: 123
       },
       navbar: null,
-      apiUrl: '//nutrition-plan-api.herokuapp.com'
+      apiUrl: '//localhost:5000'//'//nutrition-plan-api.herokuapp.com'
     }
   }
 
