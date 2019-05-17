@@ -29,23 +29,37 @@ class AddFoodRecord extends Component {
     super(props);
 
     this.state= {
-      ndbno: 1234800,
+      ndbno: null,
       meal: 'breakfast',
       foodname: '',
       amount: null,
       unit: '',
       foods: [],
       searchResults: [],
-      anchorE1: null
+      anchorE1: null,
+      nutrientInfo: [],
     }
   }
 
   componentDidMount() {
-    this.setState({
-      foods: [
-        {id: 12, ndbno: 1234567, name: 'Scrambled Eggs', userId: 123, meal: 'breakfast', amount: 12.3, unit: "g"}
-      ]
-    });
+    const url = this.props.apiUrl + '/records/' + this.props.user.id;
+    fetch(url, {
+
+    })
+    .then((res) => {
+      console.log(res);
+      res.json()
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    if(this.state.foods) {
+      this.setState({
+        foods: [
+          {id: 12, ndbno: 1234567, name: 'Scrambled Eggs', userId: 123, meal: 'breakfast', amount: 12.3, unit: "g"}
+        ]
+      });
+    }
   }
 
   handleChange(prop, e) {
@@ -67,7 +81,6 @@ class AddFoodRecord extends Component {
       return res.json()
     })
     .then((response) => {
-      //use `response.list.item`
       this.setState({
         anchorE1: e.relatedTarget,
         searchResults: response.list.item
@@ -76,10 +89,28 @@ class AddFoodRecord extends Component {
   }
 
   handleClose(e) {
-    this.setState({
-      anchorE1: null,
-      foodname: e.target.value
-    });
+    const data = {
+      api_key: this.props.apiKey,
+      ndbno: e.target.value
+    }
+    const url = '//api.nal.usda.gov/ndb/V2/reports'
+    const call = url + '?ndbno=' + data.ndbno + '&type=b&format=json&api_key=' + data.api_key
+    fetch(call)
+    .then((res) => {
+      return res.json()
+    })
+    .then((response) => {
+      let food = response.foods[0].food;
+      this.setState({
+        ndbno: food.desc.ndbno,
+        foodname: food.desc.name,
+        nutrientInfo: food.nutrients,
+        searchResults: [],
+        anchorE1: null,
+        amount: null,
+        unit: '',
+      });
+    })
   };
 
   handleSubmit(e) {
@@ -90,26 +121,26 @@ class AddFoodRecord extends Component {
       userId: this.props.user.id,
       meal: this.state.meal,
       amount: this.state.amount,
-      unit: this.state.unit
+      unit: this.state.unit,
+      nutrients: this.state.nutrientInfo
     }
-    const url = this.props.apiUrl;
+    const url = this.props.apiUrl + '/records/create';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(newRecord),
-      mode: 'no-cors',
+      mode: 'cors',
       headers:{
         'Content-Type': 'application/json'
       }
     })
     .then((res) => {
-      console.log(res);
       res.json()
     })
     .then((response) => {
       console.log('Success:', JSON.stringify(response));
       this.setState({
         foods: this.state.foods.concat(newRecord),
-        ndbno: 1234801,
+        ndbno: null,
         foodname: '',
         amount: null,
         unit: ''
@@ -187,6 +218,7 @@ class AddFoodRecord extends Component {
                           placeholder="Search Foods"
                           fullWidth
                           margin="normal"
+                          value={this.state.foodname}
                           onChange={(e) =>this.handleChange("foodname", e)}
                           InputProps= {{
                             endAdornment:
