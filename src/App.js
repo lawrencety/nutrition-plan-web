@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom'
+import { Route , Redirect } from 'react-router-dom'
 import './App.css';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
@@ -34,16 +34,7 @@ class App extends Component {
     super(props);
     this.state = {
       user: null,
-      navbar: null,
       apiUrl: '//localhost:5000'//'//nutrition-plan-api.herokuapp.com'
-    }
-  }
-
-  setUser(e) {
-    if (e === null) {
-      this.setState({ user: {} })}
-    else {
-      this.setState({ user: e.user })
     }
   }
 
@@ -59,6 +50,28 @@ class App extends Component {
         apiKey: usdaApiKey
       })
     }
+  }
+
+  setUser(e) {
+    if (e === null) {
+      this.setState()
+    } else {
+      this.setState({
+        user: {
+          id: e.user.id,
+          email: e.user.email,
+          firstName: e.user.firstName,
+          lastName: e.user.lastName,
+        },
+        navbar: <NavBarPrivate />,
+        apiKey: usdaApiKey
+       })
+      this.redirectToDashboard()
+    }
+  }
+
+  redirectToDashboard() {
+    return <Redirect to='/dashboard' />
   }
 
   render() {

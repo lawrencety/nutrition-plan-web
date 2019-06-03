@@ -43,9 +43,7 @@ class AddFoodRecord extends Component {
 
   componentDidMount() {
     const url = this.props.apiUrl + '/records/' + this.props.user.id;
-    fetch(url, {
-
-    })
+    fetch(url, {})
     .then((res) => {
       console.log(res);
       res.json()

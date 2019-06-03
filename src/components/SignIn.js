@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -32,6 +32,7 @@ class SignUp extends Component {
   }
 
   handleSubmit(e) {
+    e.preventDefault();
     let user = {
       email: this.state.email,
       password: this.state.password
@@ -40,13 +41,14 @@ class SignUp extends Component {
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(user),
+      credentials: 'omit',
       mode: 'cors',
       headers:{
         'Content-Type': 'application/json'
       }
     })
     .then((res) => {
-      res.json()
+      return res.json()
     })
     .then((response) => {
       console.log('Success:', JSON.stringify(response));
@@ -65,28 +67,59 @@ class SignUp extends Component {
             <CardContent>
               <Typography variant="headline">Sign In</Typography>
             </CardContent>
-            <form onSubmit={(e) => this.handleSubmit(e)}>
-              <CardActions>
-                <Button variant="contained" color="primary" component= { Link } to="/signup">Sign Up Here</Button>
-                <FormControl>
-                  <InputLabel htmlFor="email">Email</InputLabel>
-                  <Input id="email" placeholder= "Enter Email" value={this.state.email} onChange={(e) =>this.handleChange("email", e)} />
-                </FormControl>
-                <FormControl>
-                  <InputLabel htmlFor="password">Password</InputLabel>
-                  <Input id="password" placeholder= "Enter Password" type={this.state.showPassword ? 'text' : 'password'} value={this.state.password} onChange={(e) => this.handleChange("password", e)}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton aria-label="Toggle password visibility" onClick={() => this.handleClickShowPassword()}>
-                          {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
-                <Button type="submit" variant="contained" color="primary">Sign In</Button>
-              </CardActions>
-            </form>
+            <CardActions>
+              <form onSubmit={(e) => this.handleSubmit(e)}>
+                <Grid container spacing={24}>
+                  <Grid item xs={0} sm={1}></Grid>
+                  <Grid item xs={12} sm={5}>
+                    <FormControl>
+                      <TextField
+                        id="email"
+                        label="Email"
+                        style={{ margin: 0 }}
+                        placeholder="Enter Email"
+                        fullWidth
+                        margin="normal"
+                        value={this.state.email}
+                        onChange={(e) =>this.handleChange("email", e)}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={5}>
+                    <FormControl>
+                      <TextField
+                        id="password"
+                        label="Password"
+                        style={{ margin: 0 }}
+                        placeholder="Enter Password"
+                        fullWidth
+                        margin="normal"
+                        type={this.state.showPassword ? 'text' : 'password'}
+                        value={this.state.password}
+                        onChange={(e) =>this.handleChange("password", e)}
+                        InputProps= {{
+                          endAdornment:
+                            <InputAdornment position="end">
+                              <IconButton aria-label="Toggle password visibility" onClick={() => this.handleClickShowPassword()}>
+                                {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                              </IconButton>
+                            </InputAdornment>
+                        }}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={0} sm={1}></Grid>
+                  <Grid item xs={0} sm={1}></Grid>
+                  <Grid item xs={12} sm={5}>
+                    <Button variant="contained" color="primary" component= { Link } to="/signup">Sign Up Here</Button>
+                  </Grid>
+                  <Grid item xs={12} sm={5}>
+                    <Button type="submit" variant="contained" color="primary">Sign In</Button>
+                  </Grid>
+                  <Grid item xs={0} sm={1}></Grid>
+                </Grid>
+              </form>
+            </CardActions>
           </Card>
         </div>
       </section>
