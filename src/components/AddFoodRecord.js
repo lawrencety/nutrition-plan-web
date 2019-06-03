@@ -32,7 +32,7 @@ class AddFoodRecord extends Component {
       ndbno: null,
       meal: 'breakfast',
       foodname: '',
-      amount: null,
+      amount: '',
       unit: '',
       foods: [],
       searchResults: [],
@@ -107,8 +107,6 @@ class AddFoodRecord extends Component {
         nutrientInfo: food.nutrients,
         searchResults: [],
         anchorE1: null,
-        amount: null,
-        unit: '',
       });
     })
   };
@@ -142,11 +140,13 @@ class AddFoodRecord extends Component {
         foods: this.state.foods.concat(newRecord),
         ndbno: null,
         foodname: '',
-        amount: null,
+        amount: '',
         unit: ''
       })
     })
-    .catch((err) => {console.log('Error:', err)});
+    .catch((err) => {
+      console.log('Error:', err)
+    });
   }
 
   render() {
@@ -177,7 +177,9 @@ class AddFoodRecord extends Component {
                     .map((food) =>
                       <ExpansionPanel key={food.id}>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                          <Typography variant="body2">{food.name}</Typography>
+                          <Typography variant="body2">
+                            {(food.name.length < 30) ? food.name : (food.name.substring(0,27) + '...')}
+                          </Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                           <Typography>Amount: {food.amount} {food.unit}</Typography>
@@ -258,6 +260,7 @@ class AddFoodRecord extends Component {
                           style={{ margin: 0 }}
                           placeholder="Enter Amount"
                           fullWidth
+                          value={this.state.amount}
                           margin="normal"
                           onChange={(e) =>this.handleChange("amount", e)}
                         />

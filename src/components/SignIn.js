@@ -31,6 +31,32 @@ class SignUp extends Component {
     this.setState({ showPassword: !this.state.showPassword });
   }
 
+  handleSubmit(e) {
+    let user = {
+      email: this.state.email,
+      password: this.state.password
+    }
+    const url = this.props.apiUrl + '/users/signin'
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(user),
+      mode: 'cors',
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((res) => {
+      res.json()
+    })
+    .then((response) => {
+      console.log('Success:', JSON.stringify(response));
+      this.props.setUser(response);
+    })
+    .catch((err) => {
+      console.log('Error:', err)
+    });
+  }
+
   render() {
     return (
       <section className="home">
@@ -39,26 +65,28 @@ class SignUp extends Component {
             <CardContent>
               <Typography variant="headline">Sign In</Typography>
             </CardContent>
-            <CardActions>
-              <Button variant="contained" color="primary" component= { Link } to="/signup">Sign Up Here</Button>
-              <FormControl>
-                <InputLabel htmlFor="email">Email</InputLabel>
-                <Input id="email" placeholder= "Enter Email" value={this.state.email} onChange={(e) =>this.handleChange("email", e)} />
-              </FormControl>
-              <FormControl>
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <Input id="password" placeholder= "Enter Password" type={this.state.showPassword ? 'text' : 'password'} value={this.state.password} onChange={(e) => this.handleChange("password", e)}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton aria-label="Toggle password visibility" onClick={() => this.handleClickShowPassword()}>
-                        {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-                <Button variant="contained" color="primary">Sign In</Button>
-              </FormControl>
-            </CardActions>
+            <form onSubmit={(e) => this.handleSubmit(e)}>
+              <CardActions>
+                <Button variant="contained" color="primary" component= { Link } to="/signup">Sign Up Here</Button>
+                <FormControl>
+                  <InputLabel htmlFor="email">Email</InputLabel>
+                  <Input id="email" placeholder= "Enter Email" value={this.state.email} onChange={(e) =>this.handleChange("email", e)} />
+                </FormControl>
+                <FormControl>
+                  <InputLabel htmlFor="password">Password</InputLabel>
+                  <Input id="password" placeholder= "Enter Password" type={this.state.showPassword ? 'text' : 'password'} value={this.state.password} onChange={(e) => this.handleChange("password", e)}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton aria-label="Toggle password visibility" onClick={() => this.handleClickShowPassword()}>
+                          {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+                <Button type="submit" variant="contained" color="primary">Sign In</Button>
+              </CardActions>
+            </form>
           </Card>
         </div>
       </section>

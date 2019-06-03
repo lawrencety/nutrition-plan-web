@@ -33,12 +33,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {
-        email: 'bob@example.com',
-        id: 123
-      },
+      user: null,
       navbar: null,
       apiUrl: '//localhost:5000'//'//nutrition-plan-api.herokuapp.com'
+    }
+  }
+
+  setUser(e) {
+    if (e === null) {
+      this.setState({ user: {} })}
+    else {
+      this.setState({ user: e.user })
     }
   }
 
@@ -70,8 +75,18 @@ class App extends Component {
                 user={this.state.user}
               />}
             />
-            <Route path='/signin' component={ SignIn } />
-            <Route path='/signup' component={ SignUp } />
+            <Route path='/signin'
+              render={(props) => <SignIn {...props}
+                apiUrl={this.state.apiUrl}
+                setUser={(e) => this.setUser(e)}
+              />}
+            />
+            <Route path='/signup'
+              render={(props) => <SignUp {...props}
+                apiUrl={this.state.apiUrl}
+                setUser={(e) => this.setUser(e)}
+              />}
+            />
             <Route path='/addfood'
               render={(props) => <AddFoodRecord {...props}
                 user={this.state.user}
