@@ -34,7 +34,7 @@ class App extends Component {
     super(props);
     this.state = {
       user: null,
-      apiUrl: '//localhost:5000'//'//nutrition-plan-api.herokuapp.com'
+      apiUrl: '//nutrition-plan-api.herokuapp.com' //'//localhost:5000'
     }
   }
 
