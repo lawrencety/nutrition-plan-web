@@ -10,6 +10,11 @@ const NavBarPrivate = () => (
   <AppBar color= 'primary'>
     <Grid container spacing={24}>
       <Grid item xs={8}>
+        <span
+            style={{
+              backgroundImage: `./nutritiontracker-logo-white.png`,
+            }}
+          />
         <Typography variant="title">Logo</Typography>
       </Grid>
       <Grid item xs={4}>
