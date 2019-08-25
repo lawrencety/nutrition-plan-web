@@ -1,3 +1,4 @@
+/* APP STYLES */
 .App {
   text-align: center;
   padding-top: 100px;
@@ -33,6 +34,31 @@
   }
 }
 
+.logo-link {
+  height: 40px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* NAVIGATION STYLES */
+
+.nav {
+  display: inline-block;
+  margin-right: 0px;
+}
+
+.nav-link {
+  padding: 0px 10px 0px 10px;
+}
+
+.hero {
+  min-width: 100vw;
+  padding: auto;
+}
+
+/* CARD STYLES */
+
 .card {
   display: inline-block;
   min-width: 35vw;
@@ -44,6 +70,14 @@
   margin: 0px;
 }
 
+.home-card {
+  max-width: 40vw !important;
+  margin: auto;
+}
+
+
+/* FORM STYLES */
+
 .food-search {
   display: block;
   width: 100%;
@@ -51,24 +85,4 @@
 
 .form {
   width: 100%;
-}
-
-.nav {
-  display: inline-block;
-  margin-right: 0px;
-}
-
-.nav-link {
-  color: white !important;
-  padding: 0px 10px 0px 10px;
-}
-
-.hero {
-  min-width: 100vw;
-  padding: auto;
-}
-
-.home-card {
-  max-width: 40vw !important;
-  margin: auto;
 }

@@ -10,17 +10,13 @@ const NavBarPrivate = () => (
   <AppBar color= 'primary'>
     <Grid container spacing={24}>
       <Grid item xs={8}>
-        <span
-            style={{
-              backgroundImage: `./nutritiontracker-logo-white.png`,
-            }}
-          />
-        <Typography variant="title">Logo</Typography>
+        <Link className="nav-link" component= { RouterLink } to='/'>
+          <img className="logo-link" src={require('../images/nutritiontracker-logo-white.png')}></img>
+        </Link>
       </Grid>
       <Grid item xs={4}>
         <Toolbar className="nav">
-          <Link className="nav-link" component= { RouterLink } to='/'>Home</Link>
-          <Link className="nav-link" component= { RouterLink } to='/dashboard'>Dashboard</Link>
+          <Link color="#fff" className="nav-link" component= { RouterLink } to='/dashboard'>Dashboard</Link>
         </Toolbar>
       </Grid>
     </Grid>
