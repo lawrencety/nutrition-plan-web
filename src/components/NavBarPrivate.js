@@ -9,14 +9,15 @@ import Grid from '@material-ui/core/Grid';
 const NavBarPrivate = () => (
   <AppBar color= 'primary'>
     <Grid container spacing={24}>
-      <Grid item xs={8}>
-        <Link className="nav-link" component= { RouterLink } to='/'>
+      <Grid item xs={1}>
+        <Link className="nav-link" component= { RouterLink } to='/dashboard'>
           <img className="logo-link" src={require('../images/nutritiontracker-logo-white.png')}></img>
         </Link>
       </Grid>
+      <Grid item xs={7}></Grid>
       <Grid item xs={4}>
         <Toolbar className="nav">
-          <Link color="#fff" className="nav-link" component= { RouterLink } to='/dashboard'>Dashboard</Link>
+          <Link className="nav-link private-nav" component= { RouterLink } to='/dashboard'>Dashboard</Link>
         </Toolbar>
       </Grid>
     </Grid>

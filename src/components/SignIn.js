@@ -51,8 +51,8 @@ class SignUp extends Component {
       return res.json()
     })
     .then((response) => {
-      console.log('Success:', JSON.stringify(response));
       this.props.setUser(response);
+      
     })
     .catch((err) => {
       console.log('Error:', err)

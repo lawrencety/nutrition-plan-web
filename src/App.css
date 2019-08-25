@@ -35,7 +35,7 @@
 }
 
 .logo-link {
-  height: 40px;
+  height: 48px;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -45,11 +45,18 @@
 
 .nav {
   display: inline-block;
+  width: max-content;
   margin-right: 0px;
+  margin-left: auto;
 }
 
 .nav-link {
   padding: 0px 10px 0px 10px;
+  font-size: 18px;
+}
+
+a.private-nav {
+  color: #ffffff !important;
 }
 
 .hero {
